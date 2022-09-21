@@ -62,8 +62,8 @@ app.post('/uploadfile', upload.single('myFile'), async(req, res, next) => {
         const uploadinv = await uploadinvoice(contents, JSON.parse(process.env.USER_DETAIL), file);
         console.log("file==",file,"upload details====",uploadinv);
       }
-      const cleanfolderresp = await cleanfolder();
-      console.log("cleanfolderrespresult===", cleanfolderresp);
+      //const cleanfolderresp = await cleanfolder();
+      //console.log("cleanfolderrespresult===", cleanfolderresp);
     } catch (error) {
     console.log("error block===",error);
     }
