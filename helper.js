@@ -93,17 +93,37 @@ const readfiles = function () {
 
 const cleanfolder = function () {
   return new Promise(function (resolve, reject) {
-    fs.readdir(storagefolder, (err, files) => {
-      if (err) reject('Unable to read while cleaning the folder');
+    // fs.readdir(storagefolder, (err, files) => {
+    //   if (err) reject('Unable to read while cleaning the folder1');
 
-      for (const file of files) {
-        fs.unlink(path.join(storagefolder, file), (err) => {
-          if (err) reject('Unable to read while cleaning the folder');
-        });
-      }
-    });
+      
+    //   for (const file of files) {
+    //     console.log("files===",file);
+    //     fs.unlink(path.join(storagefolder, file), (err) => {
+    //       if (err) resolve('Unable to read while cleaning the folder2');
+    //     });
+    //   }
+    // });
+    let res = deleteFolderRecursive(storagefolder);
+    resolve(res);
   });
 };
+
+const deleteFolderRecursive = function (directoryPath) {
+  if (fs.existsSync(directoryPath)) {
+      fs.readdirSync(directoryPath).forEach((file, index) => {
+        const curPath = path.join(directoryPath, file);
+        if (fs.lstatSync(curPath).isDirectory()) {
+         // recurse
+          deleteFolderRecursive(curPath);
+        } else {
+          // delete file
+          fs.unlinkSync(curPath);
+        }
+      });
+      //fs.rmdirSync(directoryPath);
+    }
+  };
 
 const getPDF = async (filename) => {
   //return new Promise(function (resolve, reject) {

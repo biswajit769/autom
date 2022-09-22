@@ -37,35 +37,27 @@ app.get('/', function (req, res) {
 });
 
 app.post('/uploadfile', upload.single('myFile'), async(req, res, next) => {
-
+    let consolidateResp = [];
     try {
-      //const { email, firstName } = req.body;
-      //const user = new User({ email, firstName });
-      //const ret = await user.save();
-      //res.json(ret);
-      //const cleanfolderresp = await cleanfolder();
-      //console.log("cleanfolderrespresult===", cleanfolderresp);
+      
       const fileuploadres = await fileupload(req.file);
-      //console.log("result===", fileuploadres);
       const fileextractres = await fileextract(
         fileuploadres.filename,
         fileuploadres.path
       );
-      //console.log("fileextract result===", fileextractres);
       const filelist = await readfiles();
-      //console.log("filelist", filelist);
-    //   filelist.forEach((file) => {
-    //     console.log(file);
-    //   });
       for (const file of filelist) {
         const contents = await getPDF(file);
         const uploadinv = await uploadinvoice(contents, JSON.parse(process.env.USER_DETAIL), file);
         console.log("file==",file,"upload details====",uploadinv);
+        consolidateResp.push({'status':uploadinv,'file':file});
       }
-      //const cleanfolderresp = await cleanfolder();
-      //console.log("cleanfolderrespresult===", cleanfolderresp);
+      const cleanfolderres = await cleanfolder();
+      console.log("clean result====",cleanfolderres);
+      res.status(200).json({"listofupload":consolidateResp});
     } catch (error) {
     console.log("error block===",error);
+    return res.end("Error in processing");
     }
     // const file = req.file
     // if (!file) {
