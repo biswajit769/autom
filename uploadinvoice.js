@@ -17,7 +17,9 @@ async function uploadinvoice({applicationId, invoiceNo, invoiceDate, netpayble},
     });
     const page = await browser.newPage();
     await page.goto(process.env.BASE_URL,{waitUntil: 'load', timeout: 90000});
+    await page.waitForTimeout(5000);
     await page.setViewport({ width: 1440, height: 788 });
+    await page.waitForTimeout(5000);
     await page.type("#mat-input-0", userid);
     await page.type("#mat-input-1", password);
     await page.click("#kt_login_signin_submit");
