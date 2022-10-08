@@ -20,9 +20,19 @@ async function uploadinvoice({applicationId, invoiceNo, invoiceDate, netpayble},
     await page.waitForTimeout(5000);
     await page.setViewport({ width: 1440, height: 788 });
     await page.waitForTimeout(5000);
-    await page.type("#mat-input-0", userid);
-    await page.type("#mat-input-1", password);
-    await page.click("#kt_login_signin_submit");
+    await page.waitForSelector(constants.USERNAME_SELECTOR,{timeout: 60000});
+    await page.click(constants.USERNAME_SELECTOR);
+    await page.keyboard.type(userid);
+    await page.waitForTimeout(5000);
+    await page.waitForSelector(constants.PASSWORD_SELECTOR,{timeout: 60000});
+    await page.click(constants.PASSWORD_SELECTOR);
+    await page.keyboard.type(password);
+    await page.waitForTimeout(5000);
+    await page.waitForSelector(constants.SUBMIT_BUTTON_SELECTOR);
+    await page.click(constants.SUBMIT_BUTTON_SELECTOR);
+    // await page.type("#mat-input-0", userid);
+    // await page.type("#mat-input-1", password);
+    // await page.click("#kt_login_signin_submit");
     await page.waitForTimeout(5000); // wait for 5 seconds
     console.log("login completed",applicationId);
     //await browser.close();
