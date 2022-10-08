@@ -5,38 +5,47 @@ const fs = require('file-system');
 const dotenv = require("dotenv");
 const cors = require("cors");
 const uploadinvoice = require('./uploadinvoice');
+const cluster = require("cluster");
+const totalCPUs = require("os").cpus().length;
 const {fileupload, fileextract, readfiles, cleanfolder, getPDF} = require('./helper');
 dotenv.config();
-// const MongoClient = require('mongodb').MongoClient
-// const ObjectId = require('mongodb').ObjectId;
-// const myurl = 'mongodb://localhost:27017';
 
-//CREATE EXPRESS APP
-const app = express();
-app.use(express.json());
-app.use(cors());
-
-// SET STORAGE
 var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads')
-    },
-    filename: function (req, file, cb) {
-        //console.log("file details===",file);
-        cb(null, file.fieldname + '-' + Date.now()+'.zip')
-    }
+  destination: function (req, file, cb) {
+      cb(null, 'uploads')
+  },
+  filename: function (req, file, cb) {
+      //console.log("file details===",file);
+      cb(null, file.fieldname + '-' + Date.now()+'.zip')
+  }
 })
 
-var upload = multer({ storage: storage })
-app.listen(process.env.PORT, () => {
-  console.log('Server started on port',process.env.PORT);
-});
+var upload = multer({ storage: storage });
 
-app.get('/', function (req, res) {
+if (cluster.isMaster) {
+  console.log(`Number of CPUs is ${totalCPUs}`);
+  console.log(`Master ${process.pid} is running`);
+ 
+  // Fork workers.
+  for (let i = 0; i < totalCPUs; i++) {
+    cluster.fork();
+  }
+ 
+  cluster.on("exit", (worker, code, signal) => {
+    console.log(`worker ${worker.process.pid} died`);
+    console.log("Let's fork another worker!");
+    cluster.fork();
+  });
+} else {
+  const app = express();
+  app.use(express.json());
+  app.use(cors());
+
+  app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
-});
+  });
 
-app.post('/uploadfile', upload.single('myFile'), async(req, res, next) => {
+  app.post('/uploadfile', upload.single('myFile'), async(req, res, next) => {
     let consolidateResp = [];
     try {
       
@@ -67,6 +76,12 @@ app.post('/uploadfile', upload.single('myFile'), async(req, res, next) => {
     // }
     // res.send(file)
 })
+  app.listen(process.env.PORT, () => {
+    console.log('Server started on port',process.env.PORT);
+  });
+}
+
+
 
 
 

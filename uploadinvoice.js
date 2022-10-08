@@ -46,7 +46,7 @@ async function uploadinvoice({applicationId, invoiceNo, invoiceDate, netpayble},
     await page.waitForTimeout(5000);
     console.log("search box enter done",applicationId);
 
-    await page.waitForSelector('td[data-title="Application ID"] > span> a',{timeout: 60000});
+    await page.waitForSelector('td[data-title="Application ID"] > span> a',{timeout: 120000});
     await page.click('td[data-title="Application ID"] > span> a');
     await page.waitForTimeout(5000);
 
