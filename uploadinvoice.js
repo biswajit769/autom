@@ -20,7 +20,8 @@ async function uploadinvoice(contentlist,{userid, password}) {
     await page.waitForTimeout(5000);
     await page.setViewport({ width: 1440, height: 788 });
     await page.waitForTimeout(5000);
-    await page.goto(process.env.BASE_URL);
+    //await page.goto(process.env.BASE_URL);
+    await page.goto(process.env.BASE_URL, {timeout: 60000, waitUntil: 'domcontentloaded'})
     await page.waitForTimeout(5000);
     await page.waitForSelector(constants.USERNAME_SELECTOR);
     await page.click(constants.USERNAME_SELECTOR);
