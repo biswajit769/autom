@@ -54,7 +54,7 @@
     padding: 12px 15px;
 }
 .styled-table tbody tr {
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid #fff;
 }
 
 .styled-table tbody tr:nth-of-type(even) {
@@ -70,7 +70,6 @@
 }
 .styled-table tbody tr.fail {
   background: red;
-    border: none;
     color: #fff;
 }
   </style>
@@ -101,11 +100,13 @@
           $("#status").empty().text(response);
           $("#program-list tbody").empty();
           let programlist = '';
-          $.each(response.listofupload, function (key, value) {
-            programlist += `<tr class=${value['status'].fstatus}>`;
-            programlist += `<td>${value.file.substring(0, value.file.length - 4)}</td>`;
-            programlist += `<td>${value['status'].applicationid}</td>`;
-            programlist += `<td>${value['status'].fstatus}</td>`;
+          $.each(response.listofupload.data, function (key, value) {
+            console.log("value==",value);
+            programlist += `<tr class=${value.fstatus}>`;
+            programlist += `<td>${value.invoice}</td>`;
+            programlist += `<td>${value.applicationid}</td>`;
+            programlist += `<td>${value.fstatus}</td>`;
+            programlist += `<td>${value.errormsg}</td>`;
             programlist += '</tr>';
           });
           $('#program-list tbody').append(programlist);
@@ -139,9 +140,10 @@
     <table class="styled-table" id='program-list'>
       <thead>
           <tr>
-              <th>INVOICE NO</th>
+              <th>INVOICE</th>
               <th>Customer ID</th>
               <th>Upload Status</th>
+              <th>Message</th>
           </tr>
       </thead>
       <tbody>
@@ -149,11 +151,13 @@
               <td>Dom</td>
               <td>6000</td>
               <td>6000</td>
+              <td>6000</td>
           </tr>
           <tr class="active-row">
               <td>Melissa</td>
               <td>5150</td>
               <td>5150</td>
+              <td>6000</td>
           </tr>
           <!-- and so on... -->
       </tbody>
