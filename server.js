@@ -56,6 +56,7 @@ if (cluster.isMaster) {
         fileuploadres.path
       );
       const filelist = await readfiles();
+      console.log("all files====",filelist);
       for (const file of filelist) {
         const contents = await getPDF(file);
         filetouploadList.push({
