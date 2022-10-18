@@ -46,7 +46,7 @@ if (cluster.isMaster) {
   });
 
   app.post('/uploadfile', upload.single('myFile'), async(req, res, next) => {
-    const cleanfolderres = await cleanfolder();
+    //const cleanfolderres = await cleanfolder();
     let consolidateResp = [];
     var filetouploadList = [];
     try {
