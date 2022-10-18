@@ -23,11 +23,11 @@ async function uploadinvoice(contentlist,{userid, password}) {
     //await page.goto(process.env.BASE_URL);
     await page.goto(process.env.BASE_URL, {timeout: 60000, waitUntil: 'domcontentloaded'})
     await page.waitForTimeout(5000);
-    await page.waitForSelector(constants.USERNAME_SELECTOR);
+    await page.waitForSelector(constants.USERNAME_SELECTOR, {timeout: 60000});
     await page.click(constants.USERNAME_SELECTOR);
     await page.keyboard.type(userid);
     await page.waitForTimeout(5000);
-    await page.waitForSelector(constants.PASSWORD_SELECTOR);
+    await page.waitForSelector(constants.PASSWORD_SELECTOR, {timeout: 60000});
     await page.click(constants.PASSWORD_SELECTOR);
     await page.keyboard.type(password);
     await page.waitForTimeout(5000);
