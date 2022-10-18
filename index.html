@@ -95,22 +95,29 @@
               },
   
               success: function(response) {
-                $("#program-list").show();
-                $("#btnExport").show();
-          $("#status").empty().text(response);
-          $("#program-list tbody").empty();
-          let programlist = '';
-          $.each(response.listofupload.data, function (key, value) {
-            console.log("value==",value);
-            programlist += `<tr class=${value.fstatus}>`;
-            programlist += `<td>${value.invoice}</td>`;
-            programlist += `<td>${value.applicationid}</td>`;
-            programlist += `<td>${value.fstatus}</td>`;
-            programlist += `<td>${value.errormsg}</td>`;
-            programlist += '</tr>';
-          });
-          $('#program-list tbody').append(programlist);
-                  console.log(response);
+                    $.post("/process",
+                    {
+                      processedfiles: response
+                    },
+                    function(data, status){
+                    alert("Data: " + data + "\nStatus: " + status);
+                    });
+          //       $("#program-list").show();
+          //       $("#btnExport").show();
+          // $("#status").empty().text(response);
+          // $("#program-list tbody").empty();
+          // let programlist = '';
+          // $.each(response.listofupload.data, function (key, value) {
+          //   console.log("value==",value);
+          //   programlist += `<tr class=${value.fstatus}>`;
+          //   programlist += `<td>${value.invoice}</td>`;
+          //   programlist += `<td>${value.applicationid}</td>`;
+          //   programlist += `<td>${value.fstatus}</td>`;
+          //   programlist += `<td>${value.errormsg}</td>`;
+          //   programlist += '</tr>';
+          // });
+          // $('#program-list tbody').append(programlist);
+          //         console.log(response);
               }
       });
           //Very important line, it disable the page refresh.

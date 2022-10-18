@@ -6,12 +6,9 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const uploadinvoice = require('./uploadinvoice');
 const cluster = require("cluster");
-const bodyParser = require('body-parser');
-//const cors = require('cors');
 const totalCPUs = require("os").cpus().length;
 const {fileupload, fileextract, readfiles, cleanfolder, getPDF} = require('./helper');
 dotenv.config();
-//app.use(cors());
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -43,15 +40,12 @@ if (cluster.isMaster) {
   const app = express();
   app.use(express.json());
   app.use(cors());
-  app.use(bodyParser.json({limit: "50mb"}));
-  app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 
   app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
   });
 
   app.post('/uploadfile', upload.single('myFile'), async(req, res, next) => {
-    //const cleanfolderres = await cleanfolder();
     let consolidateResp = [];
     var filetouploadList = [];
     try {
@@ -73,13 +67,29 @@ if (cluster.isMaster) {
         //console.log("file==",file,"upload details====",uploadinv);
         //consolidateResp.push({'status':uploadinv,'file':file});
       }
-      //const uploadinv = await uploadinvoice(filetouploadList, JSON.parse(process.env.USER_DETAIL));
-      //console.log("file content list===",uploadinv);
+      const uploadinv = await uploadinvoice(filetouploadList, JSON.parse(process.env.USER_DETAIL));
+      console.log("file content list===",uploadinv);
       //const cleanfolderres = await cleanfolder();
       //console.log("clean result====",cleanfolderres);
-      res.status(200).json({"listofupload":filetouploadList});
+      res.status(200).json({"listofupload":uploadinv});
     } catch (error) {
-      console.log(error);
+    console.log("error block===",error);
+    const filelist = await readfiles();
+    console.log("error block filelist===",filelist);
+    for (const file of filelist) {
+      const contents = await getPDF(file);
+      filetouploadList.push({
+        "contents":contents,
+        "file":file,
+      })
+      //const uploadinv = await uploadinvoice(contents, JSON.parse(process.env.USER_DETAIL), file);
+      //console.log("file==",file,"upload details====",uploadinv);
+      //consolidateResp.push({'status':uploadinv,'file':file});
+    }
+    const uploadinverror = await uploadinvoice(filetouploadList, JSON.parse(process.env.USER_DETAIL));
+    console.log("file content list uploadinverror===",uploadinverror);
+    res.status(200).json({"listofupload":uploadinverror});
+    //return res.end("Error in processing");
     }
     // const file = req.file
     // if (!file) {
@@ -89,14 +99,6 @@ if (cluster.isMaster) {
     // }
     // res.send(file)
 })
-
-app.post('/process', async (req, res) => {
-  const filetouploadList = req.body.processedfiles.listofupload;
-  //console.log("request body===",book);
-  const uploadinv = await uploadinvoice(filetouploadList, JSON.parse(process.env.USER_DETAIL));
-  console.log("file content list===",uploadinv);
-  return res.send('Received a POST HTTP method');
-});
   app.listen(process.env.PORT, () => {
     console.log('Server started on port',process.env.PORT);
   });
