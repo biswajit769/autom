@@ -67,29 +67,13 @@ if (cluster.isMaster) {
         //console.log("file==",file,"upload details====",uploadinv);
         //consolidateResp.push({'status':uploadinv,'file':file});
       }
-      const uploadinv = await uploadinvoice(filetouploadList, JSON.parse(process.env.USER_DETAIL));
-      console.log("file content list===",uploadinv);
+      //const uploadinv = await uploadinvoice(filetouploadList, JSON.parse(process.env.USER_DETAIL));
+      //console.log("file content list===",uploadinv);
       //const cleanfolderres = await cleanfolder();
       //console.log("clean result====",cleanfolderres);
-      res.status(200).json({"listofupload":uploadinv});
+      res.status(200).json({"listofupload":filetouploadList});
     } catch (error) {
-    console.log("error block===",error);
-    const filelist = await readfiles();
-    console.log("error block filelist===",filelist);
-    for (const file of filelist) {
-      const contents = await getPDF(file);
-      filetouploadList.push({
-        "contents":contents,
-        "file":file,
-      })
-      //const uploadinv = await uploadinvoice(contents, JSON.parse(process.env.USER_DETAIL), file);
-      //console.log("file==",file,"upload details====",uploadinv);
-      //consolidateResp.push({'status':uploadinv,'file':file});
-    }
-    const uploadinverror = await uploadinvoice(filetouploadList, JSON.parse(process.env.USER_DETAIL));
-    console.log("file content list uploadinverror===",uploadinverror);
-    res.status(200).json({"listofupload":uploadinverror});
-    //return res.end("Error in processing");
+      console.log(error);
     }
     // const file = req.file
     // if (!file) {
