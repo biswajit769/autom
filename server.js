@@ -1,7 +1,7 @@
 // Require all packages installed
 const express = require('express')
 const multer = require('multer');
-const fs = require('file-system');
+const fs = require('fs');
 const dotenv = require("dotenv");
 const cors = require("cors");
 const uploadinvoice = require('./uploadinvoice');
@@ -77,7 +77,14 @@ if (cluster.isMaster) {
       //console.log("file content list===",uploadinv);
       //const cleanfolderres = await cleanfolder();
       //console.log("clean result====",cleanfolderres);
-      res.status(200).json({"listofupload":filetouploadList});
+      let jsonData = JSON.stringify(filetouploadList);
+      fs.writeFile("uploadfilelist.json", jsonData, (err) => {
+        if (err)
+        res.status(200).json({"listofupload":null});
+        else {
+          res.status(200).json({"listofupload":Object.keys(filetouploadList).length});
+        }
+      });
     } catch (error) {
       console.log(error);
     }
@@ -89,6 +96,15 @@ if (cluster.isMaster) {
     // }
     // res.send(file)
 })
+
+app.get('/process', async (req, res) => {
+  let rawdata = fs.readFileSync('uploadfilelist.json');
+  let filetouploadList = JSON.parse(rawdata);
+  console.log("processing file=",filetouploadList);
+  const uploadinv = await uploadinvoice(filetouploadList, JSON.parse(process.env.USER_DETAIL));
+  console.log("file content list===",uploadinv);
+  return res.send('Received a POST HTTP method');
+});
 
 app.post('/process', async (req, res) => {
   const filetouploadList = req.body.processedfiles.listofupload;

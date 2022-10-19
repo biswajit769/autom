@@ -95,13 +95,16 @@
               },
   
               success: function(response) {
-                    $.post("/process",
-                    {
-                      processedfiles: response
-                    },
-                    function(data, status){
-                    alert("Data: " + data + "\nStatus: " + status);
-                    });
+                $.get("/process", function(data, status){
+    alert("Data: " + data + "\nStatus: " + status);
+  });
+                    // $.post("/process",
+                    // {
+                    //   processedfiles: response
+                    // },
+                    // function(data, status){
+                    // alert("Data: " + data + "\nStatus: " + status);
+                    // });
           //       $("#program-list").show();
           //       $("#btnExport").show();
           // $("#status").empty().text(response);
