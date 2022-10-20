@@ -17,7 +17,7 @@ const createInvoice = async (invdetail, {userid, password}) => {
     });
     const page = await browser.newPage();
     await page.goto(process.env.BASE_URL);
-    await page.waitForTimeout(500);
+    //await page.waitForTimeout(500);
     await page.waitForSelector(constants.USERNAME_SELECTOR);
     await page.click(constants.USERNAME_SELECTOR);
     await page.keyboard.type(`${userid}`);
