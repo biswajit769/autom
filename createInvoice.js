@@ -24,7 +24,7 @@ const createInvoice = async (invdetail, {userid, password}) => {
     
 
     // Type into search box.
-    await page.type(constants.USERNAME_SELECTOR, userid);
+    //await page.type(constants.USERNAME_SELECTOR, userid);
     console.log("username entered");
     await browser.close();
     return 'success'; 
