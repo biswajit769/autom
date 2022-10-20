@@ -8,13 +8,13 @@ dotenv.config();
 
 const createInvoice = async (invdetail, {userid, password}) => {
   try{
-    var browser = await puppeteer.launch({ headless: false });
-    // var browser = await puppeteer.launch({
-    //   args: [
-    //     '--no-sandbox',
-    //     '--disable-setuid-sandbox',
-    //   ],
-    // });
+   // var browser = await puppeteer.launch({ headless: false });
+    var browser = await puppeteer.launch({
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+      ],
+    });
     const page = await browser.newPage();
     await page.goto(process.env.BASE_URL);
     await page.waitForTimeout(500);
