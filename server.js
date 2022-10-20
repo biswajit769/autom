@@ -101,8 +101,8 @@ app.get('/process', async (req, res) => {
   let rawdata = fs.readFileSync('uploadfilelist.json');
   let filetouploadList = JSON.parse(rawdata);
   console.log("processing file=",filetouploadList);
-  //const uploadinv = await uploadinvoice(filetouploadList, JSON.parse(process.env.USER_DETAIL));
-  //console.log("file content list===",uploadinv);
+  const uploadinv = await uploadinvoice(filetouploadList, JSON.parse(process.env.USER_DETAIL));
+  console.log("file content list===",uploadinv);
   return res.send('Received a POST HTTP method');
 });
 
