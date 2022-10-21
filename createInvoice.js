@@ -10,6 +10,7 @@ const createInvoice = async (invdetail, {userid, password}) => {
   try{
    // var browser = await puppeteer.launch({ headless: false });
     var browser = await puppeteer.launch({
+      executablePath: "google-chrome",
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
