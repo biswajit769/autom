@@ -114,11 +114,9 @@ app.post("/processinvoice", (req, res) => {
   console.log("file==",file);
   if(!_.isEmpty(req.body) && !_.isEmpty(JSON.parse(process.env.USER_DETAIL))){
     console.log("GTT execution will be triggered");
-    createInvoice(req.body, JSON.parse(process.env.USER_DETAIL)).then(response => {
-    res.send(response); 
-  })
+    createInvoice(req.body, JSON.parse(process.env.USER_DETAIL), res);
   }else{
-    res.send("fail"); 
+    //res.send("fail"); 
   }
 });
 
