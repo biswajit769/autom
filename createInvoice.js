@@ -16,7 +16,7 @@ const createInvoice = async (invdetail, {userid, password}) => {
       ],
     });
     const page = await browser.newPage();
-    await page.goto('https://web.saraloan.in/auth/login');
+    await page.goto(process.env.BASE_URL);
     // await page.waitFor(500);
     // await page.waitForSelector(constants.USERNAME_SELECTOR);
     // await page.click(constants.USERNAME_SELECTOR);
@@ -24,7 +24,7 @@ const createInvoice = async (invdetail, {userid, password}) => {
     
 
     // Type into search box.
-    //await page.type(constants.USERNAME_SELECTOR, userid);
+    await page.type(constants.USERNAME_SELECTOR, userid);
     console.log("username entered");
     await browser.close();
     return 'success'; 
