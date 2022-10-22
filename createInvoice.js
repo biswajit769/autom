@@ -16,7 +16,8 @@ const createInvoice = async (invdetail, {userid, password}, res) => {
       ],
     });
     const page = await browser.newPage();
-    await page.goto(process.env.BASE_URL);
+    //await page.goto(process.env.BASE_URL);
+    await page.goto(process.env.BASE_URL, {timeout: 60000, waitUntil: 'domcontentloaded'})
   //   await page.screenshot().then(function(buffer) {
   //     res.setHeader('Content-Disposition', 'attachment;filename="' + process.env.BASE_URL + '.png"');
   //     res.setHeader('Content-Type', 'image/png');
