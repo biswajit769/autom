@@ -33,11 +33,11 @@ const createInvoice = async (invdetail, {userid, password}, res) => {
     //await page.type(constants.USERNAME_SELECTOR, userid);
     console.log("username entered");
     //await browser.close();
-    //return 'success'; 
+    return 'success'; 
   }catch(error){
     //await browser.close();
     console.log(error);
-    //return 'fail';
+    return 'fail';
   }
   
 };
