@@ -9,15 +9,11 @@ dotenv.config();
 const createInvoice = async (invdetail, {userid, password}, res) => {
   try{
    // var browser = await puppeteer.launch({ headless: false });
-    var browser = await puppeteer.launch({
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-      ],
-    });
+    const browser = await puppeteer.launch({headless: true, args: ['--no-sandbox']});
     const page = await browser.newPage();
     //await page.goto(process.env.BASE_URL);
-    await page.goto(process.env.BASE_URL, {timeout: 60000, waitUntil: 'domcontentloaded'})
+    //await page.goto(process.env.BASE_URL, {timeout: 60000, waitUntil: 'domcontentloaded'})
+    await page.goto(process.env.BASE_URL);
   //   await page.screenshot().then(function(buffer) {
   //     res.setHeader('Content-Disposition', 'attachment;filename="' + process.env.BASE_URL + '.png"');
   //     res.setHeader('Content-Type', 'image/png');

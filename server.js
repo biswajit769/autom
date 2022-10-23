@@ -120,6 +120,10 @@ app.post("/processinvoice", async (req, res) => {
   }
 });
 
+app.post("/invprocess", async (req, res) => {
+  let { contents, file } = req.body;
+});
+
 
   app.listen(process.env.PORT, () => {
     console.log('Server started on port',process.env.PORT);
