@@ -4,8 +4,8 @@ const multer = require('multer');
 const fs = require('fs');
 const dotenv = require("dotenv");
 const cors = require("cors");
-//const uploadinvoice = require('./uploadinvoice');
-const createInvoice = require('./createInvoice');
+const uploadinvoice = require('./uploadinvoice');
+//const createInvoice = require('./createInvoice');
 const cluster = require("cluster");
 const bodyParser = require('body-parser');
 //const cors = require('cors');
@@ -103,9 +103,9 @@ app.get('/process', async (req, res) => {
   let rawdata = fs.readFileSync('uploadfilelist.json');
   let filetouploadList = JSON.parse(rawdata);
   console.log("processing file=",filetouploadList);
-  const uploadinv = await uploadinvoice(filetouploadList, JSON.parse(process.env.USER_DETAIL));
+  const uploadinv = await uploadinvoice(filetouploadList, JSON.parse(process.env.USER_DETAIL), res);
   //console.log("file content list===",uploadinv);
-  return res.send('Received a POST HTTP method');
+  return res.send('all files processed');
 });
 
 app.post("/processinvoice", async (req, res) => {

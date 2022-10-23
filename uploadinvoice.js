@@ -5,7 +5,7 @@ const fs = require('fs');
 const storagefolder = __dirname + '/uploads';
 const {formatDate} = require('./helper');
 dotenv.config();
-async function uploadinvoice(contentlist,{userid, password}) {
+async function uploadinvoice(contentlist,{userid, password}, res) {
   let consolidatedResponse = [];
   try{
     
@@ -23,6 +23,11 @@ async function uploadinvoice(contentlist,{userid, password}) {
     //await page.goto(process.env.BASE_URL);
     await page.goto(process.env.BASE_URL, {timeout: 60000, waitUntil: 'domcontentloaded'})
     await page.waitForTimeout(5000);
+    await page.screenshot().then(function(buffer) {
+      res.setHeader('Content-Disposition', 'attachment;filename="' + process.env.BASE_URL + '.png"');
+      res.setHeader('Content-Type', 'image/png');
+      res.send(buffer)
+    });
     await page.waitForSelector(constants.USERNAME_SELECTOR, {timeout: 60000});
     await page.click(constants.USERNAME_SELECTOR);
     await page.keyboard.type(userid);
