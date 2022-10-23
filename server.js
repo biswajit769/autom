@@ -4,7 +4,7 @@ const multer = require('multer');
 const fs = require('fs');
 const dotenv = require("dotenv");
 const cors = require("cors");
-const uploadinvoice = require('./uploadinvoice');
+//const uploadinvoice = require('./uploadinvoice');
 const createInvoice = require('./createInvoice');
 const cluster = require("cluster");
 const bodyParser = require('body-parser');
@@ -103,18 +103,18 @@ app.get('/process', async (req, res) => {
   let rawdata = fs.readFileSync('uploadfilelist.json');
   let filetouploadList = JSON.parse(rawdata);
   console.log("processing file=",filetouploadList);
-  //const uploadinv = await uploadinvoice(filetouploadList, JSON.parse(process.env.USER_DETAIL));
+  const uploadinv = await uploadinvoice(filetouploadList, JSON.parse(process.env.USER_DETAIL));
   //console.log("file content list===",uploadinv);
   return res.send('Received a POST HTTP method');
 });
 
-app.post("/processinvoice", (req, res) => {
+app.post("/processinvoice", async (req, res) => {
   let { contents, file } = req.body;
   console.log("contents==",contents);
   console.log("file==",file);
   if(!_.isEmpty(req.body) && !_.isEmpty(JSON.parse(process.env.USER_DETAIL))){
     console.log("GTT execution will be triggered");
-    createInvoice(req.body, JSON.parse(process.env.USER_DETAIL), res);
+    await createInvoice(req.body, JSON.parse(process.env.USER_DETAIL), res);
   }else{
     //res.send("fail"); 
   }
@@ -125,9 +125,3 @@ app.post("/processinvoice", (req, res) => {
     console.log('Server started on port',process.env.PORT);
   });
 }
-
-
-
-
-
-
